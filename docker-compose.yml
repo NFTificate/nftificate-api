@@ -1,0 +1,27 @@
+services:
+  my-service-dev:
+    container_name: my-service-dev
+    restart: unless-stopped
+    env_file: .env.development
+    build:
+      target: dev
+      context: .
+      args:
+        - PORT=${PORT:-3000}
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+      - "8080:8080"
+    volumes:
+      - .:/project
+      - node_modules:/project/node_modules/
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "512m"
+        reservations:
+          cpus: "0.25"
+          memory: "256m"
+
+volumes:
+  node_modules:
